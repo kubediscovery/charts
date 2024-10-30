@@ -4,7 +4,7 @@ metadata:
   name: {{ include "job-database.fullname" . }}
   labels:
     {{- include "job-database.labels" . | nindent 4 }}
-  {{- with .Values.externalSecret.annotations }}
+  {{- with .Values.global.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
