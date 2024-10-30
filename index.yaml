@@ -1,14 +1,25 @@
 apiVersion: v1
 entries:
+  app01:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-30T19:53:52.803075-03:00"
+    description: A Helm chart for Kubernetes
+    digest: 902418c7538e1096047335e835a99b22fb403ba4c72ef292b41d5d3afc49dc1e
+    name: app01
+    type: application
+    urls:
+    - Packages/app01-0.1.0.tgz
+    version: 0.1.0
   job-database:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-30T19:20:18.917534-03:00"
+    created: "2024-10-30T19:53:52.804108-03:00"
     description: A Helm chart for Kubernetes
-    digest: b7ebb36ff8e53a55bbf0adca0d29fc246f1682498fb1abfaf2c8f7b994da7730
+    digest: edeaba435892be436b372e6cd3eefdf85c274a7b159854fa0c436ef562f75a1f
     name: job-database
     type: application
     urls:
-    - https://github.com/kubediscovery/charts/job-database-0.1.0.tgz
+    - Packages/job-database-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-30T19:20:18.911908-03:00"
+generated: "2024-10-30T19:53:52.79672-03:00"
