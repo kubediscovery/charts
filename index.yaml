@@ -3,7 +3,7 @@ entries:
   app01:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.361314-03:00"
+    created: "2024-10-31T12:31:39.595794-03:00"
     description: A Helm chart for Kubernetes
     digest: 902418c7538e1096047335e835a99b22fb403ba4c72ef292b41d5d3afc49dc1e
     name: app01
@@ -14,7 +14,17 @@ entries:
   job-database:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.378211-03:00"
+    created: "2024-10-31T12:31:39.617686-03:00"
+    description: A Helm chart for Kubernetes
+    digest: 517f89fc96024aeb15b2d59715deb3f50e7bf728a56e2b0c077f3fc545f39760
+    name: job-database
+    type: application
+    urls:
+    - Packages/job-database-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-31T12:31:39.616988-03:00"
     description: A Helm chart for Kubernetes
     digest: a4a663a4f0752999531a5d594247edfea0d0f6529d1d463ab47f58aef36dba53
     name: job-database
@@ -24,7 +34,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.377672-03:00"
+    created: "2024-10-31T12:31:39.613159-03:00"
     description: A Helm chart for Kubernetes
     digest: 3b04e41e30fd0eb596d883a92454315961ff563e48f34e6c82247903ee9f66e8
     name: job-database
@@ -34,7 +44,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.375979-03:00"
+    created: "2024-10-31T12:31:39.610903-03:00"
     description: A Helm chart for Kubernetes
     digest: 8c293d59cf3f1cb9fdfde55efe8648cc539106a31aac301d6d4f31303d4308ba
     name: job-database
@@ -44,7 +54,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.37402-03:00"
+    created: "2024-10-31T12:31:39.609113-03:00"
     description: A Helm chart for Kubernetes
     digest: 288fd515812f9544278fcf24af51025032d1d14cf5f7cd2fe855a5baec5f7ab1
     name: job-database
@@ -54,7 +64,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.37208-03:00"
+    created: "2024-10-31T12:31:39.606852-03:00"
     description: A Helm chart for Kubernetes
     digest: 22069f29614309c858bd011cb157b10302ef5bfe3772736e48e2296e06c4d146
     name: job-database
@@ -64,7 +74,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.369903-03:00"
+    created: "2024-10-31T12:31:39.604919-03:00"
     description: A Helm chart for Kubernetes
     digest: 58b0e54edd0b4654985cb8a63f5e5933760cbd6b0f9434558d726cd62b1c095f
     name: job-database
@@ -74,7 +84,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.367371-03:00"
+    created: "2024-10-31T12:31:39.602819-03:00"
     description: A Helm chart for Kubernetes
     digest: 3d33e39497f2ae1c8a48346d84656b5b3c1981a5c6886bed2797b34d4970c69d
     name: job-database
@@ -84,7 +94,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.365458-03:00"
+    created: "2024-10-31T12:31:39.600814-03:00"
     description: A Helm chart for Kubernetes
     digest: 9cf36f262a647be942ecfe258b3a2ed2bb8989f8e202104f28c7b7bd69bc7fa8
     name: job-database
@@ -94,7 +104,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-31T12:20:06.363006-03:00"
+    created: "2024-10-31T12:31:39.598331-03:00"
     description: A Helm chart for Kubernetes
     digest: edeaba435892be436b372e6cd3eefdf85c274a7b159854fa0c436ef562f75a1f
     name: job-database
@@ -102,4 +112,4 @@ entries:
     urls:
     - Packages/job-database-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-31T12:20:06.35676-03:00"
+generated: "2024-10-31T12:31:39.593243-03:00"
