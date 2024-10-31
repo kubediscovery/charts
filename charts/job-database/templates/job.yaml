@@ -40,7 +40,7 @@ spec:
         - name: DATABASES
           value: '{{ toJson .Values.databases }}'
         {{- range .Values.databases }}
-        - name: {{ .nameKey | default .name }}
+        - name: {{ .database | default .name }}
           {{- if .secretName }}
           valueFrom:
             secretKeyRef:

@@ -37,7 +37,7 @@ data:
     validate_json "$DATABASES"
 
     for db in $(echo "$DATABASES" | jq -c '.[]'); do
-      DB_NAME=$(echo $db | jq -r '.name' | tr '-' '_')
+      DB_NAME=$(echo $db | jq -r '.database' | tr '-' '_')
       DB_USER=$(echo $db | jq -r '.username' | tr '-' '_')
       DB_PASSWORD=$(echo $db | jq -r '.password')
       DB_PASSWORD_B64=$(echo $db | jq -r '.password' |base64)
