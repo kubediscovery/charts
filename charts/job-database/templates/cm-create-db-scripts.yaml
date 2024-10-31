@@ -41,11 +41,13 @@ data:
       DB_USER=$(echo $db | jq -r '.username' | tr '-' '_')
       DB_PASSWORD=$(echo $db | jq -r '.password')
       DB_SCHEMA=$(echo $db | jq -r '.schema // "public"')
+      DB_ROLE=$(echo $DB_NAME | tr '[:upper:]' '[:lower:]')
 
       echo "DB_NAME: $DB_NAME"
       echo "DB_USER: $DB_USER"
       echo "DB_PASSWORD: $DB_PASSWORD"
       echo "DB_SCHEMA: $DB_SCHEMA"
+      echo "DB_ROLE: $DB_ROLE"
 
       psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE DATABASE $DB_NAME;" 2> /dev/null || true
 
