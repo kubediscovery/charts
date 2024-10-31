@@ -62,8 +62,8 @@ spec:
             mountPath: /scripts
             subPath: create_dbs.sh
             readOnly: true
-    restartPolicy: OnFailure
-    volumes:
+      volumes:
       - name: script-volume
         configMap:
           name: create-db-scripts
+    # restartPolicy: OnFailure
