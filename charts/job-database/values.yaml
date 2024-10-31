@@ -29,10 +29,13 @@ configMap:
 
 databases:
   - name: job-database
-    username: job-database
-    password: job-database
-    database: job-database
-    host: postgresql
+    username: job-database  # database username
+    password: job-database  # database password
+    database: job-database  # database name
+    host: postgresql        # database host
+    schema: public          # database schema
+    secretName: {}
+
 
 #This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
