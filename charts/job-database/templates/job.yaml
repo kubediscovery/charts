@@ -57,8 +57,10 @@ spec:
         {{- end }}
         command: ["sh", "-c", "chmod +x /scripts/create_dbs.sh && /scripts/create_dbs.sh"]
         volumeMounts:
-        - name: script-volume
-          mountPath: /scripts
+          - name: script-volume
+            mountPath: /scripts
+            subPath: create_dbs.sh
+            readOnly: true
       restartPolicy: OnFailure
       volumes:
       - name: script-volume
