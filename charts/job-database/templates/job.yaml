@@ -40,10 +40,19 @@ spec:
           value: '{{ toJson .Values.databases }}'
         {{- range .Values.databases }}
         - name: {{ .nameKey | default .name }}
+          {{- if .secretName }}
           valueFrom:
             secretKeyRef:
-              name: {{ .secretname }}
-              key: {{ .passwordkey }}
+              name: {{ .secretName.name }}
+              key: {{ .secretName.key }}
+          {{- else if .configMapName }}
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .configMapName }}
+              key: {{ .configMapKey }}
+          {{- else }}
+          value: {{ .password }}
+          {{- end }}
         {{- end }}
         {{- end }}
         command: ["sh", "-c", "/scripts/create_dbs.sh"]
