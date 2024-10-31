@@ -66,4 +66,4 @@ spec:
       - name: script-volume
         configMap:
           name: create-db-scripts
-    # restartPolicy: OnFailure
+      restartPolicy: OnFailure
