@@ -44,7 +44,7 @@ spec:
           {{- if .secretName }}
           valueFrom:
             secretKeyRef:
-              name: {{ .secretName.name | default include "job-database.fullname" . }}
+              name: {{ .secretName.name | default (include "job-database.fullname" .) }}
               key: {{ .secretName.key }}
           {{- else if .configMapName }}
           valueFrom:
