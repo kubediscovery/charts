@@ -11,7 +11,7 @@ secret:
   annotations: {}
 
 externalSecret:
-  enabled: false
+  enabled: true
   annotations: {}
   secretStoreRef:
     kind: ClusterSecretStore
