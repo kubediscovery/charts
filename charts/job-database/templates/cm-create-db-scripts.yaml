@@ -52,7 +52,7 @@ data:
       if [ -n "$DB_PASSWORD" ]; then
         psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
       else
-        echo "Password for user $DB_USER is not set. Skipping user creation."
+        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
       fi
 
       # Verifica se o usuário foi criado antes de conceder privilégios

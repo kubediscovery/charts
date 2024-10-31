@@ -45,7 +45,7 @@ spec:
           valueFrom:
             secretKeyRef:
               {{- if .secretName.name }}
-              name: create-databases-job-database
+              name:  {{ .secretName.name }}
               {{- else }}
               name: {{ include "job-database.fullname" . }}
               {{- end }}
