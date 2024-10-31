@@ -49,50 +49,50 @@ data:
       echo "DB_SCHEMA: $DB_SCHEMA"
       echo "DB_ROLE: $DB_ROLE"
 
-      psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE DATABASE $DB_NAME;" 2> /dev/null || true
+      psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "CREATE DATABASE $DB_NAME;" 2> /dev/null || true
 
       if [ -n "$DB_PASSWORD" ]; then
-        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
+        psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
       else
-        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
+        psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
       fi
 
       # Criar o role se não existir
-      ROLE_EXISTS=$(psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DB_ROLE'")
+      ROLE_EXISTS=$(psql --host="$PGHOST" --username="postgres" --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DB_ROLE'")
       if [ -z "$ROLE_EXISTS" ]; then
-        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE ROLE $DB_ROLE;" 2> /dev/null || true
+        psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "CREATE ROLE $DB_ROLE;" 2> /dev/null || true
       fi
       
       # Associar o usuário ao role
-      psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT $DB_ROLE TO $DB_USER;" 2> /dev/null || true
+      psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "GRANT $DB_ROLE TO $DB_USER;" 2> /dev/null || true
 
       # Conceder privilégios ao role para o banco de dados
-      psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_ROLE;" 2> /dev/null || true
+      psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_ROLE;" 2> /dev/null || true
 
       # Verifica se o usuário foi criado antes de conceder privilégios
-      USER_EXISTS=$(psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'")
+      USER_EXISTS=$(psql --host="$PGHOST" --username="postgres" --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'")
       if [ -n "$USER_EXISTS" ]; then
-        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+        psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
       else
-        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+        psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
         echo "User $DB_USER does not exist. Skipping privilege grant."
       fi
 
       # Verifica se o esquema já existe antes de tentar criá-lo
-      SCHEMA_EXISTS=$(psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -tAc "SELECT 1 FROM pg_namespace WHERE nspname = '$DB_SCHEMA'")
+      SCHEMA_EXISTS=$(psql --host="$PGHOST" --username="postgres" --dbname="$DB_NAME" -tAc "SELECT 1 FROM pg_namespace WHERE nspname = '$DB_SCHEMA'")
       if [ -z "$SCHEMA_EXISTS" ]; then
-        psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "CREATE SCHEMA $DB_SCHEMA AUTHORIZATION $DB_USER;"
+        psql --host="$PGHOST" --username="postgres" --dbname="$DB_NAME" -c "CREATE SCHEMA $DB_SCHEMA AUTHORIZATION $DB_USER;"
       fi
 
-      psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "GRANT USAGE ON SCHEMA $DB_SCHEMA TO $DB_USER;"
-      psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA $DB_SCHEMA TO $DB_USER;"
-      psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA $DB_SCHEMA TO $DB_USER;"
+      psql --host="$PGHOST" --username="postgres" --dbname="$DB_NAME" -c "GRANT USAGE ON SCHEMA $DB_SCHEMA TO $DB_USER;"
+      psql --host="$PGHOST" --username="postgres" --dbname="$DB_NAME" -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA $DB_SCHEMA TO $DB_USER;"
+      psql --host="$PGHOST" --username="postgres" --dbname="$DB_NAME" -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA $DB_SCHEMA TO $DB_USER;"
     done
 
     # Lista todas as databases criadas
     echo "Databases criadas:"
-    psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "SELECT datname FROM pg_database WHERE datistemplate = false;"
+    psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "SELECT datname FROM pg_database WHERE datistemplate = false;"
 
     # Lista todos os usuários criados
     echo "Usuários criados:"
-    psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "SELECT usename FROM pg_user;"
+    psql --host="$PGHOST" --username="postgres" --dbname=postgres -c "SELECT usename FROM pg_user;"
