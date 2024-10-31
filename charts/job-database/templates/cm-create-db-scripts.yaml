@@ -23,18 +23,57 @@ data:
 
     set -e
 
-    for db in $(echo $DATABASES | jq -c '.[]'); do
-      DB_NAME=$(echo $db | jq -r '.name')
-      DB_USER=$(echo $db | jq -r '.user')
-      DB_PASSWORD_VAR=$(echo $db | jq -r '.nameKey | default .name' | tr '[:lower:]-' '[:upper:]_')_PASSWORD
-      DB_PASSWORD=$(eval echo \$$DB_PASSWORD_VAR)
-      DB_SCHEMA=$(echo $db | jq -r '.schema')
+    validate_json() {
+      echo "$1" | jq empty > /dev/null 2>&1
+      if [ $? -eq 0 ]; then
+        echo "Valid JSON"
+      else
+        echo "Invalid JSON"
+        exit 1
+      fi
+    }
+
+    # Valida o formato JSON da variável DATABASES
+    validate_json "$DATABASES"
+
+    for db in $(echo "$DATABASES" | jq -c '.[]'); do
+      DB_NAME=$(echo $db | jq -r '.name' | tr '-' '_')
+      DB_USER=$(echo $db | jq -r '.username' | tr '-' '_')
+      DB_PASSWORD=$(echo $db | jq -r '.password')
+      DB_PASSWORD_B64=$(echo $db | jq -r '.password' |base64)
+      DB_SCHEMA=$(echo $db | jq -r '.schema // "public"')
+
+
+      echo "DB_NAME: $DB_NAME"
+      echo "DB_USER: $DB_USER"
+      echo "DB_PASSWORD: $DB_PASSWORD_B64"
+      echo "DB_SCHEMA: $DB_SCHEMA"
 
       psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE DATABASE $DB_NAME;" 2> /dev/null || true
-      psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
+
+      if [ -n "$DB_PASSWORD" ]; then
+        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASSWORD';" 2> /dev/null || true
+      else
+        echo "Password for user $DB_USER is not set. Skipping user creation."
+      fi
+
       psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
-      psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "CREATE SCHEMA $DB_SCHEMA AUTHORIZATION $DB_USER;"
+
+      # Verifica se o esquema já existe antes de tentar criá-lo
+      SCHEMA_EXISTS=$(psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -tAc "SELECT 1 FROM pg_namespace WHERE nspname = '$DB_SCHEMA'")
+      if [ -z "$SCHEMA_EXISTS" ]; then
+        psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "CREATE SCHEMA $DB_SCHEMA AUTHORIZATION $DB_USER;"
+      fi
+
       psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "GRANT USAGE ON SCHEMA $DB_SCHEMA TO $DB_USER;"
       psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA $DB_SCHEMA TO $DB_USER;"
       psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA $DB_SCHEMA TO $DB_USER;"
     done
+
+    # Lista todas as databases criadas
+    echo "Databases criadas:"
+    psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "SELECT datname FROM pg_database WHERE datistemplate = false;"
+
+    # Lista todos os usuários criados
+    echo "Usuários criados:"
+    psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "SELECT usename FROM pg_user;"
