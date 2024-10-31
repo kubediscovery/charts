@@ -35,6 +35,7 @@ spec:
             secretKeyRef:
               name: {{ include "job-database.fullname" . }}
               key: postgresql-username
+        {{- if .Values.databases }}
         - name: DATABASES
           value: '{{ toJson .Values.databases }}'
         {{- range .Values.databases }}
@@ -43,6 +44,7 @@ spec:
             secretKeyRef:
               name: {{ .secretname }}
               key: {{ .passwordkey }}
+        {{- end }}
         {{- end }}
         command: ["sh", "-c", "/scripts/create_dbs.sh"]
         volumeMounts:
