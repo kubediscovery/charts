@@ -37,16 +37,14 @@ data:
     validate_json "$DATABASES"
 
     for db in $(echo "$DATABASES" | jq -c '.[]'); do
-      DB_NAME=$(echo $db | jq -r '.database' | tr '-' '_')
+      DB_NAME=$(echo $db | jq -r '.name' | tr '-' '_')
       DB_USER=$(echo $db | jq -r '.username' | tr '-' '_')
       DB_PASSWORD=$(echo $db | jq -r '.password')
-      DB_PASSWORD_B64=$(echo $db | jq -r '.password' |base64)
       DB_SCHEMA=$(echo $db | jq -r '.schema // "public"')
-
 
       echo "DB_NAME: $DB_NAME"
       echo "DB_USER: $DB_USER"
-      echo "DB_PASSWORD: $DB_PASSWORD_B64"
+      echo "DB_PASSWORD: $DB_PASSWORD"
       echo "DB_SCHEMA: $DB_SCHEMA"
 
       psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "CREATE DATABASE $DB_NAME;" 2> /dev/null || true
@@ -57,7 +55,13 @@ data:
         echo "Password for user $DB_USER is not set. Skipping user creation."
       fi
 
-      psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+      # Verifica se o usuário foi criado antes de conceder privilégios
+      USER_EXISTS=$(psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DB_USER'")
+      if [ -n "$USER_EXISTS" ]; then
+        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+      else
+        echo "User $DB_USER does not exist. Skipping privilege grant."
+      fi
 
       # Verifica se o esquema já existe antes de tentar criá-lo
       SCHEMA_EXISTS=$(psql --host="$PGHOST" --username="$PGUSER" --dbname="$DB_NAME" -tAc "SELECT 1 FROM pg_namespace WHERE nspname = '$DB_SCHEMA'")
