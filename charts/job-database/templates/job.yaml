@@ -55,7 +55,7 @@ spec:
           {{- end }}
         {{- end }}
         {{- end }}
-        command: ["sh", "-c", "chmod +x /scripts && /scripts"]
+        command: ["sh", "-c", "cp /scripts /tmp/create-dbs ; chmod +x /tmp/create-dbs && /tmp/create-dbs"]
         # command: ["sleep", "infinity"]
         volumeMounts:
           - name: script-volume
