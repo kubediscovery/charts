@@ -55,13 +55,11 @@ spec:
           {{- end }}
         {{- end }}
         {{- end }}
-        command: ["sh", "-c", "cp /scripts /tmp/create-dbs ; chmod +x /tmp/create-dbs && /tmp/create-dbs"]
+        command: ["sh", "-c", "cp /scripts/install_deps.sh /tmp/install_deps.sh ; cp /scripts/create_dbs.sh /tmp/create_dbs.sh ; chmod +x /tmp/install_deps.sh /tmp/create-dbs ; /tmp/install_deps.sh && /tmp/create-dbs"]
         # command: ["sleep", "infinity"]
         volumeMounts:
           - name: script-volume
             mountPath: /scripts
-            subPath: create_dbs.sh
-            readOnly: true
       volumes:
       - name: script-volume
         configMap:

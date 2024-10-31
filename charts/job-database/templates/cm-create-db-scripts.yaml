@@ -9,6 +9,15 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 data:
+  install_deps.sh: |
+    #!/bin/sh
+
+    set -e
+
+    # Instala o cliente PostgreSQL e jq
+    apk update
+    apk add --no-cache postgresql-client jq
+
   create_dbs.sh: |
     #!/bin/sh
 
