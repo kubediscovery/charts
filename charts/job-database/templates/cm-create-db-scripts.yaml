@@ -60,6 +60,7 @@ data:
       if [ -n "$USER_EXISTS" ]; then
         psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
       else
+        psql --host="$PGHOST" --username="$PGUSER" --dbname=postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
         echo "User $DB_USER does not exist. Skipping privilege grant."
       fi
 
