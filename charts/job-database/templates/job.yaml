@@ -55,7 +55,7 @@ spec:
           {{- end }}
         {{- end }}
         {{- end }}
-        command: ["sh", "-c", "/scripts/create_dbs.sh"]
+        command: ["sh", "-c", "chmod +x /scripts/create_dbs.sh && /scripts/create_dbs.sh"]
         volumeMounts:
         - name: script-volume
           mountPath: /scripts
