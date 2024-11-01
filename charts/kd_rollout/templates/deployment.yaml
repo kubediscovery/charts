@@ -1,11 +1,10 @@
-{{- if .Values.deployment.enabled }}
+{{- if .Values.ingress.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "kd_rollout.fullname" . }}
   labels:
     {{- include "kd_rollout.labels" . | nindent 4 }}
-  {{- with .Values.global.annotations }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
